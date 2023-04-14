@@ -4,7 +4,8 @@ from handlers.daba_base import get_connection
 
 def new_user(name: str, email: str, cellphone: str, address: str, password: str) -> bool:
     digital_tech = get_connection()
-    cursor.execute(f"SELECT COUNT(*) FROM Usuario WHERE Correo_Electronico = '{email}'")
+    with digital_tech.cursor() as cursor:
+        cursor.execute(f"SELECT COUNT(*) FROM Usuario WHERE Correo_Electronico = '{email}'")
 
     if len(cellphone) != 10 or cursor.fetchone()[0] > 0:
         digital_tech.close()

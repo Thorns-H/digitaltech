@@ -13,7 +13,10 @@ CREATE TABLE Producto ( -- Tabla de Productos (Se referencia en Productos_Orden,
     Nombre VARCHAR(255) NOT NULL,
     Marca VARCHAR(255) NOT NULL,
     Categoria ENUM('Accesorios', 'Periféricos', 'Computadoras', 'Componentes', 'Software') NOT NULL,
-    Estatus ENUM('Activo', 'Inactivo') NOT NULL
+    Estatus ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo'
+    Descripcion TEXT, 
+    Imagen VARCHAR(255),
+    Precio FLOAT(10,2), NO NULL
 );
 
 CREATE TABLE Orden_Productos ( -- Tabla de Orden de Productos (Se referencia en Productos_Orden)

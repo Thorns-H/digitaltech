@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash, ses
 import hashlib
 from handlers.user import *
 from handlers.employee import *
+from handlers.product import *
 
 app = Flask(__name__)
 
@@ -9,7 +10,8 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     username = session.get('username')
-    return render_template('index.html', username = username)
+    products = get_products()
+    return render_template('index.html', username = username, products = products)
 
 # Ruta para la página de registro
 @app.route('/register')
@@ -20,7 +22,7 @@ def register():
 def register_post():
     name = request.form['name']
     email = request.form['email']
-    cellphone = request.form['cellphone']
+    cellphone = request.form['phone']
     address = request.form['address']
     password = request.form['password']
 
