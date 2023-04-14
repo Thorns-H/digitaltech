@@ -23,7 +23,7 @@ def get_user(email: str) -> tuple:
     user: tuple
 
     with digital_tech.cursor() as cursor:
-        cursor.execute(f"SELECT ID, Correo_Electronico, Contrasena FROM Usuario WHERE Correo_Electronico = '{email}'")
+        cursor.execute(f"SELECT ID, Nombre, Correo_Electronico, Contrasena, Telefono, Direccion FROM Usuario WHERE Correo_Electronico = '{email}'")
         user = cursor.fetchone()
 
     digital_tech.close()
@@ -34,7 +34,7 @@ def get_user(id: int) -> tuple:
     user: tuple
 
     with digital_tech.cursor() as cursor:
-        cursor.execute(f"SELECT ID, Correo_Electronico, Contrasena FROM Usuario WHERE Correo_Electronico = '{id}'")
+        cursor.execute(f"SELECT ID, Nombre, Correo_Electronico, Contrasena, Telefono, Direccion FROM Usuario WHERE Correo_Electronico = '{id}'")
         user = cursor.fetchone()
 
     digital_tech.close()

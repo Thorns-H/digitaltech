@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 import hashlib
 from handlers.user import *
 from handlers.employee import *
@@ -8,7 +8,8 @@ app = Flask(__name__)
 # Ruta para la página principal
 @app.route('/')
 def index():
-    return render_template('index.html')
+    username = session.get('username')
+    return render_template('index.html', username = username)
 
 # Ruta para la página de registro
 @app.route('/register')
@@ -46,11 +47,31 @@ def login_post():
 
     user = get_user(email)
 
-    if user and user[2] == password:
+    if user and user[3] == password:
+        session['id'] = user[0]
+        session['username'] = user[1]
+        session['email'] = user[2]
+        session['password'] = user[3]
+        session['cellphone'] = user[4]
+        session['address'] = user[5]
         return redirect('/')
     else:
         error = 'Correo electrónico o contraseña incorrectos'
         return render_template('login.html', error = error)
+    
+@app.route('/user_profile')
+def user_profile():
+    return render_template('user_profile.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('id', None)
+    session.pop('username', None)
+    session.pop('email', None)
+    session.pop('phone', None)
+    session.pop('password', None)
+    session.pop('address', None)
+    return redirect(url_for('index'))
 
 # Ruta para la página de logeo de empleados
 @app.route('/employee_login')
@@ -73,4 +94,6 @@ def employee_login_post():
         return render_template('employee_login.html', error = error)
 
 if __name__ == '__main__':
+    app.secret_key = '192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf'
     app.run()
+    
