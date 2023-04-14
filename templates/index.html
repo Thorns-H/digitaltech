@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DigitalTech</title>
+    <style>
+      /* Estilos para el fondo de la página */
+      body {
+        background-color: #e7eff6;
+        font-family: 'Roboto', sans-serif;
+      }
+
+      /* Estilos para el encabezado */
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        background-color: #0077b6;
+        color: #fff;
+      }
+
+      /* Estilos para el título de la tienda */
+      h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
+
+      /* Estilos para los botones de iniciar sesión y registrarse */
+      .btn {
+        display: inline-block;
+        margin-left: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #fff;
+        color: #0077b6;
+        border-radius: 0.25rem;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out; /* Transición de 0.3 segundos para el efecto hover */
+      }
+
+      .btn:hover {
+        background-color: #0077b6;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>DigitalTech</h1>
+      <div>
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Iniciar sesión</a>
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Registrarse</a>
+      </div>
+    </header>
+  </body>
+</html>
