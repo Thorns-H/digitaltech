@@ -24,7 +24,7 @@ def get_employee(id: int) -> tuple:
     employee: tuple
 
     with digital_tech.cursor() as cursor:
-        cursor.execute(f"SELECT ID, Correo_Electronico, Contrasena FROM Empleado WHERE ID = '{id}'")
+        cursor.execute(f"SELECT * FROM Empleado WHERE ID = '{id}'")
         employee = cursor.fetchone()
 
     digital_tech.close()
