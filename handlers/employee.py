@@ -5,12 +5,7 @@ from handlers.daba_base import get_connection
 
 def new_employee(name: str, address: str, email: str, job: str) -> None:
     digital_tech = get_connection()
-
-    replace_domains = ('@gmail.com', '@outlook.com', 'hotmail.com', 'yahoo.com')
-
-    for domain in replace_domains:
-        password = email.replace(domain, '@digitaltech.com')
-    
+    password = email
     password = hashlib.md5(password.encode()).hexdigest()
     
     with digital_tech.cursor() as cursor:
@@ -30,11 +25,26 @@ def get_employee(id: int) -> tuple:
     digital_tech.close()
     return employee
 
+def update_employee(id: str, name: str, address: str, email: str, job: str):
+    digital_tech = get_connection()
+    
+    with digital_tech.cursor() as cursor:
+        cursor.execute(f"UPDATE Empleado SET Nombre = '{name}', Direccion = '{address}', Correo_Electronico = '{email}', Cargo = '{job}' WHERE ID = '{id}'")
+
+    digital_tech.commit()
+    digital_tech.close()
+
 def remove_employee(id: int) -> None:
     digital_tech = get_connection()
 
     with digital_tech.cursor() as cursor:
-        cursor.execute(f"UPDATE Empleado SET Estatus = 'Inactivo' WHERE ID = {id}")
+        cursor.execute(f"SELECT Estatus FROM Empleado WHERE ID = '{id}'")
+        status = cursor.fetchone()
+
+        if status[0] == 'Activo':
+            cursor.execute(f"UPDATE Empleado SET Estatus = 'Inactivo' WHERE ID = '{id}'")
+        else:
+            cursor.execute(f"UPDATE Empleado SET Estatus = 'Activo' WHERE ID = '{id}'")
 
     digital_tech.commit()
     digital_tech.close()
@@ -44,7 +54,7 @@ def get_employees() -> list:
     employees: list
 
     with digital_tech.cursor() as cursor:
-        cursor.execute("SELECT ID, Nombre, Direccion, Correo_Electronico, Cargo FROM Empleado WHERE Estatus = 'Activo'")
+        cursor.execute("SELECT * FROM Empleado")
         employees = cursor.fetchall()
 
     digital_tech.close()

@@ -3,6 +3,7 @@ import hashlib
 from handlers.user import *
 from handlers.employee import *
 from handlers.product import *
+from handlers.suppliers import *
 
 app = Flask(__name__)
 
@@ -34,7 +35,6 @@ def register_post():
 
     return redirect('/login')
 
-
 # Ruta para la página de logeo
 @app.route('/login')
 def login():
@@ -61,10 +61,12 @@ def login_post():
         error = 'Correo electrónico o contraseña incorrectos'
         return render_template('login.html', error = error)
     
+# Ruta para los datos del perfil de Usuario
 @app.route('/user_profile')
 def user_profile():
     return render_template('user_profile.html')
 
+# Ruta para cerrar sessión
 @app.route('/logout')
 def logout():
     session.pop('id', None)
@@ -101,7 +103,8 @@ def employee_login_post():
     else:
         error = 'Código de empleado o contraseña incorrectos'
         return render_template('employee_login.html', error = error)
-    
+
+# Rutas de panel de control de empleados
 @app.route('/workers_control_panel', methods = ['POST', 'GET'])
 def workers_control_panel():
 
@@ -116,8 +119,14 @@ def workers_control_panel():
         print(option)
         if option == 'product-related':
             return redirect(url_for('crud_products'))
+        elif option == 'modify-employee':
+            return redirect(url_for('crud_employees'))
+        elif option == 'provider_related':
+            return redirect(url_for('crud_suppliers'))
+
         return render_template('workers_control_panel.html', name = name, job = job, email = email)
-    
+
+# Rutas de CRUD de Productos
 @app.route('/crud_products')
 def crud_products():
     products = get_products()
@@ -161,10 +170,85 @@ def update_products():
 
 @app.route('/remove_product/<int:id>')
 def remove_products(id):
-    
     remove_product(id)
-
     return redirect(url_for('crud_products'))
+
+# Rutas de CRUD de Empleados
+@app.route('/crud_employees')
+def crud_employees():
+    employees = get_employees()
+    return render_template('crud_employees.html', employees = employees)
+
+@app.route('/crud_employees', methods = ['POST'])
+def add_employee():
+    name = request.form['nombre']
+    address = request.form['direccion']
+    email = request.form['correo']
+    job = request.form['option']
+
+    new_employee(name, address, email, job)
+
+    employees = get_employees()
+    return render_template('crud_employees.html', employees = employees)
+
+@app.route('/edit_employee/<int:id>')
+def edit_employee(id):
+    employee = get_employee(id)
+    return render_template('edit_employee.html', employee = employee)
+
+@app.route('/update_employee', methods = ['POST'])
+def update_employees():
+
+    identifier = request.form['id']
+    name = request.form['nombre']
+    address = request.form['direccion']
+    email = request.form['correo']
+    job = request.form['cargo']
+    
+    update_employee(identifier, name, address, email, job)
+
+    return redirect(url_for('crud_employees'))
+
+@app.route('/remove_employee/<int:id>')
+def remove_employees(id):
+    remove_employee(id)
+    return redirect(url_for('crud_employees'))
+
+# Rutas de CRUD de Proveedores
+@app.route('/crud_suppliers')
+def crud_suppliers():
+    suppliers = get_suppliers()
+    return render_template('crud_suppliers.html', suppliers = suppliers)
+
+@app.route('/crud_suppliers', methods=['POST'])
+def add_supplier():
+    name = request.form['nombre']
+    address = request.form['direccion']
+    rfc = request.form['rfc']
+    phone = request.form['telefono']
+
+    new_supplier(name, address, rfc, phone)
+
+    suppliers = get_suppliers()
+    return render_template('crud_suppliers.html', suppliers = suppliers)
+
+@app.route('/edit_supplier/<int:id>')
+def edit_supplier(id):
+    supplier = get_supplier(id)
+    return render_template('edit_supplier.html', supplier = supplier)
+
+@app.route('/update_supplier', methods = ['POST'])
+def update_suppliers():
+
+    identifier = request.form['id']
+    name = request.form['nombre']
+    address = request.form['direccion']
+    rfc = request.form['rfc']
+    phone = request.form['telefono']
+    
+    update_supplier(identifier, name, address, rfc, phone)
+
+    return redirect(url_for('crud_suppliers'))
 
 if __name__ == '__main__':
     app.secret_key = '192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf'
