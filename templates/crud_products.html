@@ -102,7 +102,7 @@
                         <td>{{ product[3] }}</td>
                         <td>{{ product[4] }}</td>
                         <td>{{ product[5] }}</td>
-                        <td>{{ product[6] }}</td>
+                        <td><img src="{{ product[6] }}" alt="{{ product[1] }}" style="max-height: 75px; max-width: 75px; border: 1px solid #ccc; object-fit: contain"></td>
                         <td>{{ product[7] }}</td>
                         <td>
                           <a href="{{ url_for('edit_product', id = product[0]) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
