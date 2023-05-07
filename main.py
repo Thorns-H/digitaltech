@@ -129,8 +129,7 @@ def workers_control_panel():
 # Rutas de CRUD de Productos
 @app.route('/crud_products')
 def crud_products():
-    products = get_products()
-    return render_template('crud_products.html', products = products)
+    return render_template('crud_products.html', products = [])
 
 @app.route('/crud_products', methods=['POST'])
 def add_product():
@@ -144,8 +143,24 @@ def add_product():
 
     new_product(name, brand, category, status, description, image, price)
 
+    return render_template('crud_products.html', products = [])
+
+@app.route('/search_products', methods=['POST'])
+def search_products():
+
+    coincidencia = request.form['coincidencia']
     products = get_products()
-    return render_template('crud_products.html', products = products)
+    filtered_products = []
+
+    if coincidencia == '':
+        return render_template('crud_products.html', products = filtered_products)
+
+    for product in products:
+        for element in product:
+            if coincidencia.lower() in str(element).lower() and product not in filtered_products:
+                filtered_products.append(product)
+
+    return render_template('crud_products.html', products = filtered_products)
 
 @app.route('/edit_product/<int:id>')
 def edit_product(id):
@@ -176,8 +191,7 @@ def remove_products(id):
 # Rutas de CRUD de Empleados
 @app.route('/crud_employees')
 def crud_employees():
-    employees = get_employees()
-    return render_template('crud_employees.html', employees = employees)
+    return render_template('crud_employees.html', employees = [])
 
 @app.route('/crud_employees', methods = ['POST'])
 def add_employee():
@@ -188,8 +202,24 @@ def add_employee():
 
     new_employee(name, address, email, job)
 
+    return render_template('crud_employees.html', employees = [])
+
+@app.route('/search_employees', methods=['POST'])
+def search_employees():
+
+    coincidencia = request.form['coincidencia']
     employees = get_employees()
-    return render_template('crud_employees.html', employees = employees)
+    filtered_employees = []
+
+    if coincidencia == '':
+        return render_template('crud_employees.html', employees = filtered_employees)
+
+    for employee in employees:
+        for element in employee:
+            if coincidencia.lower() in str(element).lower() and employee not in filtered_employees:
+                filtered_employees.append(employee)
+
+    return render_template('crud_employees.html', employees = filtered_employees)
 
 @app.route('/edit_employee/<int:id>')
 def edit_employee(id):
@@ -217,8 +247,7 @@ def remove_employees(id):
 # Rutas de CRUD de Proveedores
 @app.route('/crud_suppliers')
 def crud_suppliers():
-    suppliers = get_suppliers()
-    return render_template('crud_suppliers.html', suppliers = suppliers)
+    return render_template('crud_suppliers.html', suppliers = [])
 
 @app.route('/crud_suppliers', methods=['POST'])
 def add_supplier():
@@ -229,8 +258,24 @@ def add_supplier():
 
     new_supplier(name, address, rfc, phone)
 
+    return render_template('crud_suppliers.html', suppliers = [])
+
+@app.route('/search_suppliers', methods=['POST'])
+def search_suppliers():
+
+    coincidencia = request.form['coincidencia']
     suppliers = get_suppliers()
-    return render_template('crud_suppliers.html', suppliers = suppliers)
+    filtered_suppliers = []
+
+    if coincidencia == '':
+        return render_template('crud_suppliers.html', suppliers = [])
+
+    for supplier in suppliers:
+        for element in supplier:
+            if coincidencia.lower() in str(element).lower() and supplier not in filtered_suppliers:
+                filtered_suppliers.append(supplier)
+
+    return render_template('crud_suppliers.html', suppliers = filtered_suppliers)
 
 @app.route('/edit_supplier/<int:id>')
 def edit_supplier(id):
