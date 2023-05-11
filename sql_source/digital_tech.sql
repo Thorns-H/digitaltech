@@ -85,3 +85,12 @@ CREATE TABLE Productos_Devolucion ( -- Tabla de Productos en una Devolución (Se
     Cantidad INT NOT NULL,
     Motivo TEXT NOT NULL
 );
+
+CREATE TABLE Comentarios (
+    ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ID_Producto INT UNSIGNED,
+    ID_Usuario int UNSIGNED,
+    Comentario TEXT,
+    FOREIGN KEY (ID_Producto) REFERENCES Producto(ID),
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID)
+);

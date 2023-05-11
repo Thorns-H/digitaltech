@@ -4,6 +4,7 @@ from handlers.user import *
 from handlers.employee import *
 from handlers.product import *
 from handlers.suppliers import *
+from handlers.comments import *
 
 app = Flask(__name__)
 
@@ -166,6 +167,41 @@ def search_products():
 def edit_product(id):
     product = get_product(id)
     return render_template('edit_product.html', product = product)
+
+@app.route('/product_detail/<int:id>')
+def product_detail(id):
+    username = session.get('username')
+    product = get_product(id)
+    comments = get_comments(id)
+    user_id = session.get('id')
+    print(comments)
+    return render_template('product_detail.html', user_id = user_id, username = username, product = product, comments = comments)
+
+@app.route('/add_comment/<int:id>', methods = ['POST'])
+def add_comment(id):
+    comment = request.form['comment']
+    user_id = session.get('id')
+
+    create_comment(id, user_id, comment)
+
+    username = session.get('username')
+    product = get_product(id)
+
+    comments = get_comments(id)
+
+    return render_template('product_detail.html', user_id = user_id, username = username, product = product, comments = comments)
+
+@app.route('/delete_comment/<int:id>/<int:id_product>', methods = ['POST'])
+def delete_comment(id, id_product):
+
+    remove_comment(id)
+
+    username = session.get('username')
+    user_id = session.get('id')
+    product = get_product(id_product)
+    comments = get_comments(id_product)
+
+    return render_template('product_detail.html', user_id = user_id, username = username, product = product, comments = comments)
 
 @app.route('/update_product', methods = ['POST'])
 def update_products():
