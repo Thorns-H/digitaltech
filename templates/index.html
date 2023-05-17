@@ -26,6 +26,12 @@
                 <a class="nav-link" href="{{ url_for('user_profile') }}"><i class="fas fa-user"></i> {{ username.split()[0] }}</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('shopping_cart') }}"><i class="fas fa-shopping-cart"></i> Mi Carrito</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('show_orders') }}"><i class="fas fa-file"></i> Mis Ordenes</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
               </li>
             {% else %}
@@ -51,10 +57,6 @@
               <h5 class="card-title" style="font-family: Arial; font-size: 18px; text-align: center;">{{ product[1] }}</h5>
               <p class="card-text" style="font-family: Arial; font-size: 14px; text-align: center;">{{ product[3] }}</p>
               <p class="card-text" style="font-family: Arial; font-size: 14px; text-align: center;">Precio: MXN ${{ product[7] }}</p>
-              <div class="form-group">
-                <label for="{{ product[1] }}-cantidad" style="font-family: Arial; font-size: 14px; text-align: center;">Cantidad</label>
-                <input type="number" class="form-control" id="{{ product[1] }}-cantidad" name="{{ product[1] }}-cantidad" min="1" max="100" value="1">
-              </div>
               {% if username %}
               <a href="{{ url_for('product_detail', id = product[0]) }}" class="btn btn-primary d-block mx-auto" style="margin-top: 1rem; width: 100px; font-family: Arial;">Detalles</a>
               {% else %}

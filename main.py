@@ -5,6 +5,9 @@ from handlers.employee import *
 from handlers.product import *
 from handlers.suppliers import *
 from handlers.comments import *
+from handlers.shopping_cart import *
+from handlers.product_order import *
+from handlers.returns import *
 
 app = Flask(__name__)
 
@@ -67,6 +70,70 @@ def login_post():
 def user_profile():
     return render_template('user_profile.html')
 
+@app.route('/shopping_cart')
+def shopping_cart():
+    id = session.get('id')
+    return render_template('shopping_cart.html', products = get_shopping_cart(id))
+
+@app.route('/delete_shopping/<int:id>', methods = ['POST'])
+def delete_shopping(id):
+    user_id = session.get('id')
+    remove_from_cart(user_id, id)
+    return redirect(url_for('shopping_cart'))
+
+@app.route('/clear_shopping', methods = ['POST'])
+def clear_shopping():
+    user_id = session.get('id')
+    clear_cart(user_id)
+    return redirect(url_for('shopping_cart'))
+
+@app.route('/show_orders')
+def show_orders():
+    id = session.get('id')
+    return render_template('show_orders.html', orders = get_user_orders(id))
+
+@app.route('/order_info/<int:id>', methods = ['POST'])
+def order_info(id):
+    products = get_products_from_order(id)
+    total = 0
+
+    for product in products:
+        total += (product[2] * product[3])
+
+    total = round(total, 2)
+
+    return render_template('order_info.html', products = products, total = total)
+
+@app.route('/return_info/<int:id>', methods = ['POST'])
+def return_info(id):
+    products = get_products_from_order(id)
+    total = 0
+
+    for product in products:
+        total += (product[2] * product[3])
+
+    total = round(total, 2)
+
+    return render_template('return_info.html', products = products, total = total, order = id)
+
+@app.route('/generate_return/<int:id>', methods=['POST'])
+def generate_return(id):
+    product_ids = request.form.getlist('product_id[]')
+    return_quantities = request.form.getlist('return_qty[]')
+    reason = request.form['motivo']
+    
+    products_to_update = [(int(valor1), int(valor2)) for valor1, valor2 in zip(product_ids, return_quantities)]
+
+    create_return(session.get('id'), reason, products_to_update, id)
+    
+    return redirect(url_for('index'))
+
+@app.route('/create_order', methods = ['POST'])
+def create_order():
+    user_id = session.get('id')
+    new_order(user_id)
+    return redirect(url_for('index'))
+
 # Ruta para cerrar sessión
 @app.route('/logout')
 def logout():
@@ -115,17 +182,27 @@ def workers_control_panel():
 
     if request.method == 'GET':
         return render_template('workers_control_panel.html', name = name, job = job, email = email)
-    else:
-        option = request.form['option']
-        print(option)
-        if option == 'product-related':
-            return redirect(url_for('crud_products'))
-        elif option == 'modify-employee':
-            return redirect(url_for('crud_employees'))
-        elif option == 'provider_related':
-            return redirect(url_for('crud_suppliers'))
 
-        return render_template('workers_control_panel.html', name = name, job = job, email = email)
+    option = request.form['option']
+
+    if option == 'product-related':
+        return redirect(url_for('crud_products'))
+    elif option == 'modify-employee':
+        return redirect(url_for('crud_employees'))
+    elif option == 'provider_related':
+        return redirect(url_for('crud_suppliers'))
+    else:
+        return redirect(url_for('crud_returns'))
+
+@app.route('/crud_returns')
+def crud_returns():
+    returns = get_returns()
+    return render_template('crud_returns.html', returns = returns)
+
+@app.route('/accept_returns/<int:id>/<int:id_product>/<int:quantity>', methods=['POST'])
+def accept_returns(id, id_product, quantity):
+    accept_return(id_product, quantity, id)
+    return redirect(url_for('crud_returns'))
 
 # Rutas de CRUD de Productos
 @app.route('/crud_products')
@@ -174,8 +251,16 @@ def product_detail(id):
     product = get_product(id)
     comments = get_comments(id)
     user_id = session.get('id')
-    print(comments)
+
     return render_template('product_detail.html', user_id = user_id, username = username, product = product, comments = comments)
+
+@app.route('/add_product_to_cart/<int:id>', methods = ['POST'])
+def add_product_to_cart(id):
+    user_id = session.get('id')
+    quantity = request.form['cantidad']
+    add_to_cart(user_id, id, quantity)
+
+    return redirect(url_for('index'))
 
 @app.route('/add_comment/<int:id>', methods = ['POST'])
 def add_comment(id):

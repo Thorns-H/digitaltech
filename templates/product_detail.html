@@ -47,9 +47,11 @@
                     <h5 class="card-title">{{ product[1] }}</h5>
                     <p class="card-text" style="color: green;">Precio: MXN ${{ product[7] }}</p>
                     <div class="form-group text-center">
-                        <label for="{{ product[1] }}-cantidad">Cantidad</label>
-                        <input type="number" class="form-control" id="{{ product[1] }}-cantidad" name="{{ product[1] }}-cantidad" min="1" max="100" value="1">
-                        <button type="button" class="btn btn-primary mt-2 margin-top: 2rem">Agregar al carrito</button>
+                        <label for="cantidad">Cantidad</label>
+                        <form action="{{ url_for('add_product_to_cart', id=product[0]) }}" method="POST">
+                          <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="{{ product[8] }}" value="1">
+                          <button type="submit" class="btn btn-primary mt-2 margin-top: 2rem">Agregar al carrito</button>
+                        </form>
                     </div>                    
                   </div>
                 </div>
@@ -62,7 +64,7 @@
                 <h6 class="card-subtitle mb-2 text-muted">Descripción</h6>
                 <p class="card-text">{{ product[5] }}</p>
                 <h6 class="card-subtitle mb-2 text-muted">Existencias</h6>
-                <p class="card-text" style="color: green;">Disponible</p>
+                <p class="card-text" style="color: green;">Disponible ({{ product[8] }})</p>
                 <h6 class="card-subtitle mb-2 text-muted">Categoria</h6>
                 <p class="card-text">{{ product[3] }}</p>
               </div>
@@ -82,7 +84,7 @@
             <button type="submit" class="btn btn-primary mt-2">Enviar comentario</button>
         </form>
     </div>    
-</div>        
+</div>
 <div class="row mt-5">
     <div class="col-md-6 offset-md-3">
       <h4 class="mb-4">Comentarios</h4>
