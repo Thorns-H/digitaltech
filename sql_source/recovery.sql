@@ -16,6 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `Comentarios`
+--
+
+DROP TABLE IF EXISTS `Comentarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Comentarios` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ID_Producto` int(10) unsigned DEFAULT NULL,
+  `ID_Usuario` int(10) unsigned DEFAULT NULL,
+  `Comentario` text DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ID_Producto` (`ID_Producto`),
+  KEY `ID_Usuario` (`ID_Usuario`),
+  CONSTRAINT `Comentarios_ibfk_1` FOREIGN KEY (`ID_Producto`) REFERENCES `Producto` (`ID`),
+  CONSTRAINT `Comentarios_ibfk_2` FOREIGN KEY (`ID_Usuario`) REFERENCES `Usuario` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Comentarios`
+--
+
+LOCK TABLES `Comentarios` WRITE;
+/*!40000 ALTER TABLE `Comentarios` DISABLE KEYS */;
+INSERT INTO `Comentarios` VALUES (3,1,3,'¡Me encanta su estilo simple sin RGB!'),(5,2,5,'¡Me encanta para jugar osu!');
+/*!40000 ALTER TABLE `Comentarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Devolucion`
 --
 
@@ -55,7 +85,7 @@ CREATE TABLE `Empleado` (
   `Estatus` enum('Activo','Inactivo') DEFAULT 'Activo',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Correo_Electronico` (`Correo_Electronico`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +94,7 @@ CREATE TABLE `Empleado` (
 
 LOCK TABLES `Empleado` WRITE;
 /*!40000 ALTER TABLE `Empleado` DISABLE KEYS */;
-INSERT INTO `Empleado` VALUES (1,'Abraham Magaña Hernández','202cb962ac59075b964b07152d234b70','Jaime Carrillo #4380','abrahamm9986@gmail.com','Sistemas','Activo'),(2,'Enzo Franchesco Lezama Sandoval','28cf26ebae39935b6d601792d44a403b','Blvd. Gral. Marcelino García Barragán #1421','enzolezama@gmail.com','Gerente','Activo'),(3,'Rodrigo Hernández Ruiz','66a37c499f737bbe02cdfdfddfbdcfcf','Av. Adolfo López Mateos Sur #2375','rodrigohernandez@gmail.com','Empleado','Activo');
+INSERT INTO `Empleado` VALUES (1,'Abraham Magaña Hernández','202cb962ac59075b964b07152d234b70','Jaime Carrillo #4380','abrahamm9986@gmail.com','Sistemas','Activo'),(2,'Enzo Franchesco Lezama Sandoval','28cf26ebae39935b6d601792d44a403b','Blvd. Gral. Marcelino García Barragán #1421','enzolezama@gmail.com','Gerente','Inactivo'),(3,'Rodrigo Hernández Ruiz','66a37c499f737bbe02cdfdfddfbdcfcf','Av. Adolfo López Mateos Sur #2375','rodrigohernandez@gmail.com','Empleado','Inactivo'),(4,'Diego Nicolas de Alba Flores','9c5b5875656543133a8c0a8bd88de140','Av. Avestruz #666','diego_wero1234@gmail.com','Empleado','Activo'),(5,'Nicolas Diego Alba de Flores','c847252c854d52e1fbb2801cbabcce0e','Av. Colibrí #6483, Guadalajara, Jalisco','nicolas_diego@gmail.com','Empleado','Activo');
 /*!40000 ALTER TABLE `Empleado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,7 +169,7 @@ CREATE TABLE `Producto` (
   `Imagen` varchar(255) DEFAULT NULL,
   `Precio` float(10,2) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +178,7 @@ CREATE TABLE `Producto` (
 
 LOCK TABLES `Producto` WRITE;
 /*!40000 ALTER TABLE `Producto` DISABLE KEYS */;
-INSERT INTO `Producto` VALUES (1,'Teclado Gamer Blackwidow V3','Razer','Periféricos','Activo','','https://i.ibb.co/Y8c77y9/test.webp',2187.64),(2,'Teclado Gamer Alloy FPS','HyperX','Periféricos','Activo','','https://i.ibb.co/Rg7tzF4/test-1.webp',1043.18),(3,'Mouse Gamer G502','Logitech','Periféricos','Activo','','https://i.ibb.co/qdFMBF5/6352e466c1b8f.webp',1399.38),(4,'Tapete para Mouse Gamer','Naceb','Accesorios','Activo','','https://i.ibb.co/q7Ygj9j/60a077032cd37.webp',312.42),(5,'Software Microsoft Office Hogar y Estudiantes 2021','Microsoft','Software','Activo','','https://i.ibb.co/VS3Bjrq/windows.webp',2235.35),(6,'Procesador AMD Ryzen 5 5600G 6 Nucleos Socket AM4 4.4 Ghz','AMD','Componentes','Activo','','https://i.ibb.co/pj1qMCr/60ff3e4324e4e.webp',2406.26),(7,'Computadora 6020 V5 Intel Core i3-10105 3.70GHz 8GB 1TB','Lanix','Computadoras','Activo','','https://i.ibb.co/kQzvGrn/63116cd44fcac.webp',11232.50),(8,'Memoria RAM DDR4','Kingston','Componentes','Activo','','https://i.ibb.co/GWRtvZ5/kingston-beast-fury-8gb.webp',306.05);
+INSERT INTO `Producto` VALUES (1,'Teclado Gamer Blackwidow V3','Razer','Periféricos','Activo','Razer BlackWidow V3. Formato del teclado: Tamaño completo (100%). Estilo de teclado: Derecho. Interfaz del dispositivo: USB, Interruptor del teclado: Interruptor mecánico, Diseño de teclado: QWERTY. Tipo de retroiluminación: Ninguna. Uso recomendado: Juego. Color del producto: Negro.','https://i.ibb.co/Y8c77y9/test.webp',2187.64),(2,'Teclado Gamer Alloy FPS','HyperX','Periféricos','Activo','HyperX Alloy FPS Pro. Formato del teclado: Tamaño completo (100%). Estilo de teclado: Derecho. Tecnología de conectividad: Alámbrico, Interfaz del dispositivo: USB, Interruptor del teclado: Interruptor mecánico, Teclado, cantidad de teclas: 87. Tipo de retroiluminación: LED. Longitud de cable: 1.8 m. Uso recomendado: Juego. Color del producto: Negro','https://i.ibb.co/Rg7tzF4/test-1.webp',1043.18),(3,'Mouse Gamer G502','Logitech','Periféricos','Activo','Logitech G G502. Factor de forma: Diestro. Tecnología de detección de movimientos: Óptico, Interfaz del dispositivo: RF inalámbrico, Resolución de movimiento: 16000 DPI, Tiempo de respuesta: 1 ms, Tipo de botones: Botones presionados, Cantidad de botones: 11, Tipo de desplazamiento: Rueda, Aceleración (máx.): 40 G. Iluminación de color: Multi. Fuente de energía: Baterías. Color del producto: Negro','https://i.ibb.co/qdFMBF5/6352e466c1b8f.webp',1399.38),(4,'Tapete para Mouse Gamer','Naceb','Accesorios','Activo','Naceb Technology NA-0927. Ancho: 360 mm, Profundidad: 260 mm. Color del producto: Negro, Coloración de superficie: Monótono, Materiales: PVC. USB con suministro de corriente. Color de luz de fondo: Multicolor','https://i.ibb.co/q7Ygj9j/60a077032cd37.webp',312.42),(5,'Software Microsoft Office Hogar y Estudiantes 2021','Microsoft','Software','Activo','Microsoft Office Home and Student 2021. Cantidad de licencia: 1 licencia(s). Versión de idioma: Español','https://i.ibb.co/VS3Bjrq/windows.webp',2235.35),(6,'Procesador AMD Ryzen 5 5600G 6 Nucleos Socket AM4 4.4 Ghz','AMD','Componentes','Activo','AMD Ryzen 5 5600G. Familia de procesador: AMD Ryzen™ 5, Socket de procesador: Enchufe AM4, Litografía del procesador: 7 nm. Canales de memoria: Dual-channel, Tipos de memoria soportados por el procesador: DDR4-SDRAM, Velocidades de memoria del reloj soportadas por el procesador: 3200 MHz. Modelo de gráficos en tarjeta: AMD Radeon Graphics, Frecuencia de base de adaptador de gráficos incluida: 1900 MHz. Segmento de mercado: Escritorio','https://i.ibb.co/pj1qMCr/60ff3e4324e4e.webp',2406.26),(7,'Computadora 6020 V5 Intel Core i3-10105 3.70GHz 8GB 1TB','Lanix','Computadoras','Activo','Lanix 41373. Frecuencia del procesador: 3.7 GHz, Familia de procesador: Intel® Core™ i3, Modelo del procesador: i3-10105. Memoria interna: 8 GB, Tipo de memoria interna: DDR4-SDRAM, Velocidad de memoria del reloj: 2666 MHz. Capacidad total de almacenaje: 1000 GB, Unidad de almacenamiento: Unidad de disco duro, Lector de tarjeta integrado, Tipo de unidad óptica: DVD-RW. Modelo de gráficos en tarjeta: Intel® UHD Graphics 630. Fuente de alimentación: 300 W. Tipo de chasis: Mini Tower. Tipo de producto: PC. Color del producto: Negro','https://i.ibb.co/kQzvGrn/63116cd44fcac.webp',11232.50),(8,'Memoria RAM DDR4','Kingston','Componentes','Inactivo','Kingston Technology FURY Beast. Componente para: PC/servidor, Memoria interna: 8 GB, Diseño de memoria (módulos x tamaño): 1 x 8 GB, Tipo de memoria interna: DDR4, Velocidad de memoria del reloj: 2666 MHz, Factor de forma de memoria: 288-pin DIMM, Latencia CAS: 16','https://i.ibb.co/GWRtvZ5/kingston-beast-fury-8gb.webp',306.05),(10,'GeForce GTX 1050Ti','Asus','Componentes','Activo','\r\nGeForce GTX 1050Ti ASUS es una tarjeta de video diseñada para PCs. Posee una memoria de video de 4 GB, interfaz de memoria de 128 bits y tecnología GDDR5. Ofrece una velocidad de reloj base de 1290 MHz y una velocidad de reloj en modo turbo de 1392 MHz. Cuenta con 768 núcleos CUDA y soporte para resoluciones de hasta 7680x4320 píxeles. Además, tiene salidas de video HDMI, DisplayPort y DVI-D, lo que la hace compatible con múltiples pantallas.','https://i.ibb.co/p4LtZYP/1050ti.webp',5395.95);
 /*!40000 ALTER TABLE `Producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,7 +281,7 @@ CREATE TABLE `Proveedor` (
   `RFC` varchar(255) NOT NULL,
   `Telefono` varchar(20) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,6 +290,7 @@ CREATE TABLE `Proveedor` (
 
 LOCK TABLES `Proveedor` WRITE;
 /*!40000 ALTER TABLE `Proveedor` DISABLE KEYS */;
+INSERT INTO `Proveedor` VALUES (1,'Cyberpuerta','Av. Chapultepec 15, Ladrón de Guevara, Lafayette, #44600 Guadalajara, Jal.','PEGJ850715','3347371360');
 /*!40000 ALTER TABLE `Proveedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,4 +333,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-15 19:53:42
+-- Dump completed on 2023-05-16 23:15:00
