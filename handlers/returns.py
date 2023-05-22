@@ -16,6 +16,8 @@ def create_return(id_user: int, reason: str, products_to_update: list, id_order:
             digital_tech.commit()
             cursor.execute(f"UPDATE Productos_Orden SET Cantidad = Cantidad - '{product[1]}' WHERE ID_Orden = '{id_order}' AND ID_Producto = '{product[0]}'")
             digital_tech.commit()
+            cursor.execute("DELETE FROM Productos_Devolucion WHERE Cantidad = 0")
+            digital_tech.commit()
 
     digital_tech.close()
 
@@ -35,6 +37,8 @@ def accept_return(product_id: int, quantity: int, return_id: int) -> None:
 
     with digital_tech.cursor() as cursor:
         cursor.execute(f"UPDATE Producto SET Existencias = Existencias + '{quantity}' WHERE ID = '{product_id}'")
+        digital_tech.commit()
+        cursor.execute("DELETE FROM Productos_Orden WHERE Cantidad = 0")
         digital_tech.commit()
         cursor.execute(f"UPDATE Devolucion SET Estatus = 'Finalizado' WHERE ID = {return_id}")
         digital_tech.commit()

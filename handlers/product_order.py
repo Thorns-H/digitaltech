@@ -14,8 +14,23 @@ def get_orders() -> list:
 def get_user_orders(id: int) -> list:
     digital_tech = get_connection()
     orders: tuple
+    ids: tuple
+    order: tuple
 
     with digital_tech.cursor() as cursor:
+        cursor.execute(f"SELECT ID FROM Orden_Productos WHERE ID_Usuario = '{id}'")
+        ids = cursor.fetchall()
+
+        for identifier in ids:
+            cursor.execute(f"SELECT * FROM Productos_Orden WHERE ID_Orden = '{identifier[0]}'")
+            order = cursor.fetchone()
+            
+            if not order:
+                cursor.execute(f"DELETE FROM Orden_Productos WHERE ID = '{identifier[0]}'")
+
+    with digital_tech.cursor() as cursor:
+        cursor.execute("DELETE FROM Productos_Orden WHERE Cantidad = 0")
+        digital_tech.commit()
         cursor.execute(f"SELECT * FROM Orden_Productos WHERE ID_Usuario = '{id}'")
         orders = cursor.fetchall()
 
@@ -68,7 +83,7 @@ def get_products_from_order(id):
             needed_info.append(product[2])
             needed_info.append(order[1])
             needed_info.append(product[3])
-            needed_info.append(order[2])
+            needed_info.append(order[2]) 
 
             products.append(needed_info)
 
@@ -76,5 +91,3 @@ def get_products_from_order(id):
 
     digital_tech.close()
     return products
-
-    
